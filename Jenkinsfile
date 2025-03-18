@@ -31,6 +31,20 @@ pipeline {
             }
         }
         
+        // docker image 생성
+        stage('Docker Image Build') {
+            steps {
+                echo 'Docker Image Build'
+                dir("${env.WORKSPACE}") {
+                    sh '''
+                        docker build -t spring-petclinic:$BUILD_NUMBER .
+                        docker tag spring-petclinic:$BUILD_NUMBER sobin0401/spring-petclinic:latest
+                        '''
+                }
+            }
+            
+        }
+        
         stage('SSH Publish'){
             steps {
                 echo 'SSH Publish'
