@@ -8,6 +8,8 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerCredential')
+        REGION = "ap-northeast-2"
+        AWS_CREDENTIALS_NAME = "AWSCredentials"
     }
     
     stages {
@@ -70,29 +72,29 @@ pipeline {
             }
         }
         
-        stage('SSH Publish'){
-            steps {
-                echo 'SSH Publish'
-                sshPublisher(publishers: [sshPublisherDesc(configName: 'target', 
-                transfers: [sshTransfer(cleanRemote: false, 
-                excludes: '', 
-                execCommand: '''
-                docker rm -f $(docker ps -aq)
-                docker rmi $(docker images -q)
-                docker run -d -p 8080:8080 --name spring-petclinic sobin0401/spring-petclinic:latest
-                ''', 
-                execTimeout: 120000, flatten: false, 
-                makeEmptyDirs: false, 
-                noDefaultExcludes: false, 
-                patternSeparator: '[, ]+', 
-                remoteDirectory: '', 
-                remoteDirectorySDF: false, 
-                removePrefix: 'target', 
-                sourceFiles: 'target/*.jar')], 
-                usePromotionTimestamp: false, 
-                useWorkspaceInPromotion: false, 
-                verbose: false)])
-            }
-        }
+        // stage('SSH Publish'){
+        //     steps {
+        //         echo 'SSH Publish'
+        //         sshPublisher(publishers: [sshPublisherDesc(configName: 'target', 
+        //         transfers: [sshTransfer(cleanRemote: false, 
+        //         excludes: '', 
+        //         execCommand: '''
+        //         docker rm -f $(docker ps -aq)
+        //         docker rmi $(docker images -q)
+        //         docker run -d -p 8080:8080 --name spring-petclinic sobin0401/spring-petclinic:latest
+        //         ''', 
+        //         execTimeout: 120000, flatten: false, 
+        //         makeEmptyDirs: false, 
+        //         noDefaultExcludes: false, 
+        //         patternSeparator: '[, ]+', 
+        //         remoteDirectory: '', 
+        //         remoteDirectorySDF: false, 
+        //         removePrefix: 'target', 
+        //         sourceFiles: 'target/*.jar')], 
+        //         usePromotionTimestamp: false, 
+        //         useWorkspaceInPromotion: false, 
+        //         verbose: false)])
+        //     }
+        // }
     }
 }
