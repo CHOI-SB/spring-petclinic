@@ -1,4 +1,4 @@
-FROM openjdk:17-oracle
+FROM openjdk:21-oracle
 ARG JAR_PATH=target/*.jar
 COPY ${JAR_PATH} spring-petclinic.jar
 EXPOSE 8080
